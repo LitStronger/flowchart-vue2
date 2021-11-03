@@ -85,47 +85,29 @@ export default {
           class: "disable",
         },
         // {
-        //    icon:'icon-fengexian',
-        //    name:'分割',
-        //    cmd:'line',
-        //    class:'disable'
-        //  },
-        //  {
-        //    icon:'icon-to-front',
-        //    name:'最上层',
-        //    cmd:'tofront',
-        //    class:'disable'
-        //  },
-        //  {
-        //    icon:'icon-to-back',
-        //    name:'最下层',
-        //    cmd:'toback',
-        //    class:'disable'
-        //  },
-        {
-          icon: "icon-fengexian",
-          name: "分割",
-          cmd: "line",
-          class: "disable",
-        },
-        {
-          icon: "icon-kuangxuan",
-          name: "框选",
-          cmd: "selectFrame",
-          class: "disable",
-        },
-        {
-          icon: "icon-group",
-          name: "成组",
-          cmd: "createGroup",
-          class: "disable",
-        },
-        {
-          icon: "icon-ungroup",
-          name: "取消成组",
-          cmd: "ungroup",
-          class: "disable",
-        },
+        //   icon: "icon-fengexian",
+        //   name: "分割",
+        //   cmd: "line",
+        //   class: "disable",
+        // },
+        // {
+        //   icon: "icon-kuangxuan",
+        //   name: "框选",
+        //   cmd: "selectFrame",
+        //   class: "disable",
+        // },
+        // {
+        //   icon: "icon-group",
+        //   name: "成组",
+        //   cmd: "createGroup",
+        //   class: "disable",
+        // },
+        // {
+        //   icon: "icon-ungroup",
+        //   name: "取消成组",
+        //   cmd: "ungroup",
+        //   class: "disable",
+        // },
         {
           icon: "icon-fengexian",
           name: "分割",
@@ -332,5 +314,6 @@ li ul li:hover {
 
 .icon-save {
   width: 16px;
+  vertical-align: unset;
 }
 </style>

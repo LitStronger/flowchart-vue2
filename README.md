@@ -1,16 +1,19 @@
-# cicadaflow
+# flowchart-vue2
 
 ## Project setup
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 npm run build
 ```
@@ -25,32 +28,32 @@ npm run build
 
 ### Features
 
-* undo & redo
-* add node
-* add edge
-* create group
-* ungroup
-* copy node & copy group
-* delete
-* change node
-  * fill
-  * text fill
-  * stroke
-  * font size
-  * font style
-  * ...
-* change edge
-  * stroke
-  * line dash
-  * line style
-  * text fill
-  * font size
-  * ...
-* change group
-  * lock model & unlock model
-  * drag node to group && drag node leave from group
-  * background
-  * font
-  * ...
-* thumbnail
-* add custom picture
+- undo & redo
+- add node
+- add edge
+- create group
+- ungroup
+- copy node & copy group
+- delete
+- change node
+  - fill
+  - text fill
+  - stroke
+  - font size
+  - font style
+  - ...
+- change edge
+  - stroke
+  - line dash
+  - line style
+  - text fill
+  - font size
+  - ...
+- change group
+  - lock model & unlock model
+  - drag node to group && drag node leave from group
+  - background
+  - font
+  - ...
+- thumbnail
+- add custom picture

@@ -2,7 +2,18 @@
   <div class="toolbar">
     <div class="shape clearfix" v-for="s in shape" v-bind:key="s.id">
       <div class="shape-header">{{ s.header }}</div>
-      <ul>
+      <ul v-if="s.id === 'line'">
+        <li
+          draggable="true"
+          @dragstart="dragstart($event, item)"
+          v-for="item in s.icon"
+          v-bind:key="item.command"
+          :class="'iconfont ' + item.iconName"
+        >
+          <div v-html="item.path" :title="item.text"></div>
+        </li>
+      </ul>
+      <ul v-else>
         <li
           draggable="true"
           @dragstart="dragstart($event, item)"
@@ -53,7 +64,7 @@
     </div>
 
     <div @click.stop="showCustomize = !showCustomize" class="toolbar-btn">
-      Add Images
+      + 添加自定义
     </div>
 
     <div class="customize-win" v-if="showCustomize">
@@ -134,6 +145,27 @@ export default {
       imageUrl: "",
       shape: [
         {
+          id: "line",
+          header: "Line",
+          icon: [
+            {
+              iconName: "icon-zhixianjiantou",
+              text: "rounded rectangle",
+              command: "straightLine",
+            },
+            {
+              iconName: "icon-zhexianjiantou",
+              text: "rounded rectangle",
+              command: "polyline",
+            },
+            {
+              iconName: "icon-quxianjiantou",
+              text: "rounded rectangle",
+              command: "bsline",
+            },
+          ],
+        },
+        {
           id: "flowChart",
           header: "FlowChart",
           icon: [
@@ -186,167 +218,167 @@ export default {
               text: "terminator",
               command: "roundRect",
             },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><rect x="1.44" y="7.68" width="28.8" height="14.4" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></rect><path d="M 4.32 7.68 L 4.32 22.08 M 27.36 7.68 L 27.36 22.08" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 4.32 7.68 L 4.32 22.08 M 27.36 7.68 L 27.36 22.08" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "process",
-              command: "preRect",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 7.48 C 1.2 6.66 1.87 6 2.7 6 L 29.1 6 C 29.93 6 30.6 6.66 30.6 7.48 L 30.6 22.26 C 25.86 20.51 20.64 20.51 15.9 22.26 C 11.16 24 5.94 24 1.2 22.26 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "document",
-              command: "document",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 4.62 6.59 C 4.62 5.69 5.36 4.95 6.27 4.95 L 28.71 4.95 C 29.15 4.95 29.57 5.12 29.88 5.43 C 30.19 5.74 30.36 6.16 30.36 6.59 L 30.36 19.73 C 26.25 18 21.6 18 17.49 19.73 C 13.38 21.47 8.73 21.47 4.62 19.73 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 2.97 8.23 C 2.97 7.33 3.71 6.59 4.62 6.59 L 27.06 6.59 C 27.97 6.59 28.71 7.33 28.71 8.23 L 28.71 21.37 C 24.6 19.64 19.95 19.64 15.84 21.37 C 11.73 23.11 7.08 23.11 2.97 21.37 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.32 9.88 C 1.32 8.97 2.06 8.23 2.97 8.23 L 25.41 8.23 C 26.32 8.23 27.06 8.97 27.06 9.88 L 27.06 23.02 C 22.95 21.28 18.3 21.28 14.19 23.02 C 10.08 24.75 5.43 24.75 1.32 23.02 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "multi-document",
-              command: "multidocument",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.44 5.28 L 25.44 5.28 L 30.24 14.88 L 25.44 24.48 L 1.44 24.48 L 6.24 14.88 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "processBar",
-              command: "processBar",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 7.5 C 1.2 6.67 1.87 6 2.7 6 L 24.84 6 C 28.35 7.61 30.6 11.13 30.6 15 C 30.6 18.87 28.35 22.39 24.84 24 L 2.7 24 C 1.87 24 1.2 23.33 1.2 22.5 L 1.2 7.5 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "delay",
-              command: "delay",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 6.9 6 L 29.1 6 C 29.93 6 30.6 6.67 30.6 7.5 L 30.6 22.5 C 30.6 23.33 29.93 24 29.1 24 L 2.7 24 C 1.87 24 1.2 23.33 1.2 22.5 L 1.2 12 L 6.9 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "card",
-              command: "card",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 5.78 6.8 C 5.78 -0.45 26.18 -0.45 26.18 6.8 L 26.18 23.12 C 26.18 30.37 5.78 30.37 5.78 23.12 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 5.78 6.8 C 5.78 12.24 26.18 12.24 26.18 6.8" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "cylinder",
-              command: "cylinder",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 8.64 5.28 L 23.04 5.28 L 30.24 14.88 L 23.04 24.48 L 8.64 24.48 L 1.44 14.88 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "preparation",
-              command: "prepare",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 6.9 6 L 24.9 6 L 30.6 12 L 30.6 22.5 C 30.6 23.33 29.93 24 29.1 24 L 2.7 24 C 1.87 24 1.2 23.33 1.2 22.5 L 1.2 12 L 6.9 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "loop limit",
-              command: "loop",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><ellipse cx="15.96" cy="14.82" rx="13.3" ry="13.3" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></ellipse><path d="M 2.66 14.82 L 29.26 14.82" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 2.66 14.82 L 29.26 14.82" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 15.96 1.52 L 15.96 28.12" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 15.96 1.52 L 15.96 28.12" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "summing function",
-              command: "perhaps",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 28.18 1.12 C 28.67 1.13 29.07 1.3 29.23 1.58 C 29.4 1.86 29.31 2.21 29.01 2.52 L 2.91 27.16 C 2.61 27.47 2.52 27.82 2.69 28.1 C 2.85 28.38 3.25 28.55 3.74 28.56 L 28.18 28.56 C 28.67 28.55 29.07 28.38 29.23 28.1 C 29.4 27.82 29.31 27.47 29.01 27.16 L 2.91 2.52 C 2.61 2.21 2.52 1.86 2.69 1.58 C 2.85 1.3 3.25 1.13 3.74 1.12 L 28.18 1.12 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "collate",
-              command: "contrast",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 16.52 1.4 L 29.4 14.28 C 29.58 14.41 29.68 14.62 29.68 14.84 C 29.68 15.06 29.58 15.27 29.4 15.4 L 16.52 28.28 C 16.39 28.46 16.18 28.56 15.96 28.56 C 15.74 28.56 15.53 28.46 15.4 28.28 L 2.52 15.4 C 2.34 15.27 2.24 15.06 2.24 14.84 C 2.24 14.62 2.34 14.41 2.52 14.28 L 15.4 1.4 C 15.53 1.22 15.74 1.12 15.96 1.12 C 16.18 1.12 16.39 1.22 16.52 1.4 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 2.24 14.84 L 29.68 14.84" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 2.24 14.84 L 29.68 14.84" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "sort",
-              command: "sort",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 15 C 3.63 10.47 7.88 7.19 12.87 6 L 24.84 6 C 28.35 7.61 30.6 11.13 30.6 15 C 30.6 18.87 28.35 22.39 24.84 24 L 12.87 24 C 7.88 22.81 3.63 19.53 1.2 15 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "display",
-              command: "display",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><rect x="2.66" y="1.52" width="26.6" height="26.6" rx="1.9" ry="1.9" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></rect><path d="M 2.66 7.22 L 29.26 7.22" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 2.66 7.22 L 29.26 7.22" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 8.36 1.52 L 8.36 28.12" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 8.36 1.52 L 8.36 28.12" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "internal storage",
-              command: "store",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 13.5 L 29.09 6 C 29.48 6 29.86 6.16 30.15 6.44 C 30.43 6.72 30.59 7.1 30.59 7.5 L 30.59 22.5 C 30.6 23.22 30.09 23.86 29.39 24 L 2.7 24 C 2.3 24 1.92 23.84 1.64 23.56 C 1.36 23.28 1.2 22.9 1.2 22.5 L 1.2 13.5 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "manual Input",
-              command: "manualInput",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 7.45 C 5.94 9.19 11.16 9.19 15.9 7.45 C 20.64 5.7 25.86 5.7 30.6 7.45 L 30.6 22.25 C 25.86 20.5 20.64 20.5 15.9 22.25 C 11.16 24 5.94 24 1.2 22.25 L 1.2 7.45 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "paper tape",
-              command: "paperBag",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><ellipse cx="15.8" cy="14.99" rx="13.365" ry="13.365" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></ellipse><path d="M 15.8 28.35 L 29.16 28.35" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 15.8 28.35 L 29.16 28.35" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "sequential data",
-              command: "ordinaldata",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.32 7.51 C 1.2 7.15 1.3 6.76 1.59 6.46 C 1.89 6.17 2.34 6 2.8 6.01 L 28.99 6.01 C 29.46 6 29.91 6.17 30.2 6.46 C 30.5 6.76 30.6 7.15 30.48 7.51 L 24.83 22.5 C 24.67 23.25 24.08 23.84 23.34 24 L 8.46 24 C 7.71 23.84 7.13 23.25 6.97 22.5 L 1.32 7.51 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "manual operation",
-              command: "manualOperation",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 3.9 6 L 27.9 6 C 29.39 6 30.6 10.03 30.6 15 C 30.6 19.97 29.39 24 27.9 24 L 3.9 24 C 2.41 24 1.2 19.97 1.2 15 C 1.2 10.03 2.41 6 3.9 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 27.9 6 C 26.41 6 25.2 10.03 25.2 15 C 25.2 19.97 26.41 24 27.9 24" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 27.9 6 C 26.41 6 25.2 10.03 25.2 15 C 25.2 19.97 26.41 24 27.9 24" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "direct data",
-              command: "directData",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 4.48 6 L 30.15 6 C 30.3 6.17 30.3 6.43 30.15 6.6 C 29 7.94 28.24 11.28 28.24 15 C 28.24 18.72 29 22.06 30.15 23.4 C 30.3 23.57 30.3 23.83 30.15 24 L 4.48 24 C 2.84 24 1.5 19.97 1.5 15 C 1.5 10.03 2.84 6 4.48 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "stored data",
-              command: "storeData",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 15.81 13.33 L 17.36 14.88 L 15.81 16.43 L 14.26 14.88 L 15.81 13.33 Z M 9.61 13.33 L 11.16 14.88 L 9.61 16.43 L 8.06 14.88 L 9.61 13.33 Z M 22.01 13.33 L 23.56 14.88 L 22.01 16.43 L 20.46 14.88 L 22.01 13.33 Z" fill="#ffff00" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.24 8.68 L 30.38 8.68" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 1.24 8.68 L 30.38 8.68" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.24 21.08 L 30.38 21.08" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 1.24 21.08 L 30.38 21.08" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "parallel mode",
-              command: "parallelModel",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 22.96 1.12 L 8.96 1.12 L 8.96 28.56 L 22.96 28.56" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 22.96 1.12 L 8.96 1.12 L 8.96 28.56 L 22.96 28.56" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "annotation",
-              command: "annotation",
-            },
-            {
-              path:
-                '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 29.96 1.12 L 15.96 1.12 L 15.96 28.56 L 29.96 28.56" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 29.96 1.12 L 15.96 1.12 L 15.96 28.56 L 29.96 28.56" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.96 14.84 L 15.96 14.84" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 1.96 14.84 L 15.96 14.84" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
-              iconName: "",
-              text: "annotation 2",
-              command: "induce",
-            },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><rect x="1.44" y="7.68" width="28.8" height="14.4" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></rect><path d="M 4.32 7.68 L 4.32 22.08 M 27.36 7.68 L 27.36 22.08" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 4.32 7.68 L 4.32 22.08 M 27.36 7.68 L 27.36 22.08" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "process",
+            //   command: "preRect",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 7.48 C 1.2 6.66 1.87 6 2.7 6 L 29.1 6 C 29.93 6 30.6 6.66 30.6 7.48 L 30.6 22.26 C 25.86 20.51 20.64 20.51 15.9 22.26 C 11.16 24 5.94 24 1.2 22.26 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "document",
+            //   command: "document",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 4.62 6.59 C 4.62 5.69 5.36 4.95 6.27 4.95 L 28.71 4.95 C 29.15 4.95 29.57 5.12 29.88 5.43 C 30.19 5.74 30.36 6.16 30.36 6.59 L 30.36 19.73 C 26.25 18 21.6 18 17.49 19.73 C 13.38 21.47 8.73 21.47 4.62 19.73 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 2.97 8.23 C 2.97 7.33 3.71 6.59 4.62 6.59 L 27.06 6.59 C 27.97 6.59 28.71 7.33 28.71 8.23 L 28.71 21.37 C 24.6 19.64 19.95 19.64 15.84 21.37 C 11.73 23.11 7.08 23.11 2.97 21.37 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.32 9.88 C 1.32 8.97 2.06 8.23 2.97 8.23 L 25.41 8.23 C 26.32 8.23 27.06 8.97 27.06 9.88 L 27.06 23.02 C 22.95 21.28 18.3 21.28 14.19 23.02 C 10.08 24.75 5.43 24.75 1.32 23.02 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "multi-document",
+            //   command: "multidocument",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.44 5.28 L 25.44 5.28 L 30.24 14.88 L 25.44 24.48 L 1.44 24.48 L 6.24 14.88 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "processBar",
+            //   command: "processBar",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 7.5 C 1.2 6.67 1.87 6 2.7 6 L 24.84 6 C 28.35 7.61 30.6 11.13 30.6 15 C 30.6 18.87 28.35 22.39 24.84 24 L 2.7 24 C 1.87 24 1.2 23.33 1.2 22.5 L 1.2 7.5 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "delay",
+            //   command: "delay",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 6.9 6 L 29.1 6 C 29.93 6 30.6 6.67 30.6 7.5 L 30.6 22.5 C 30.6 23.33 29.93 24 29.1 24 L 2.7 24 C 1.87 24 1.2 23.33 1.2 22.5 L 1.2 12 L 6.9 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "card",
+            //   command: "card",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 5.78 6.8 C 5.78 -0.45 26.18 -0.45 26.18 6.8 L 26.18 23.12 C 26.18 30.37 5.78 30.37 5.78 23.12 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 5.78 6.8 C 5.78 12.24 26.18 12.24 26.18 6.8" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "cylinder",
+            //   command: "cylinder",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 8.64 5.28 L 23.04 5.28 L 30.24 14.88 L 23.04 24.48 L 8.64 24.48 L 1.44 14.88 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "preparation",
+            //   command: "prepare",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 6.9 6 L 24.9 6 L 30.6 12 L 30.6 22.5 C 30.6 23.33 29.93 24 29.1 24 L 2.7 24 C 1.87 24 1.2 23.33 1.2 22.5 L 1.2 12 L 6.9 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "loop limit",
+            //   command: "loop",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><ellipse cx="15.96" cy="14.82" rx="13.3" ry="13.3" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></ellipse><path d="M 2.66 14.82 L 29.26 14.82" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 2.66 14.82 L 29.26 14.82" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 15.96 1.52 L 15.96 28.12" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 15.96 1.52 L 15.96 28.12" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "summing function",
+            //   command: "perhaps",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 28.18 1.12 C 28.67 1.13 29.07 1.3 29.23 1.58 C 29.4 1.86 29.31 2.21 29.01 2.52 L 2.91 27.16 C 2.61 27.47 2.52 27.82 2.69 28.1 C 2.85 28.38 3.25 28.55 3.74 28.56 L 28.18 28.56 C 28.67 28.55 29.07 28.38 29.23 28.1 C 29.4 27.82 29.31 27.47 29.01 27.16 L 2.91 2.52 C 2.61 2.21 2.52 1.86 2.69 1.58 C 2.85 1.3 3.25 1.13 3.74 1.12 L 28.18 1.12 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "collate",
+            //   command: "contrast",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 16.52 1.4 L 29.4 14.28 C 29.58 14.41 29.68 14.62 29.68 14.84 C 29.68 15.06 29.58 15.27 29.4 15.4 L 16.52 28.28 C 16.39 28.46 16.18 28.56 15.96 28.56 C 15.74 28.56 15.53 28.46 15.4 28.28 L 2.52 15.4 C 2.34 15.27 2.24 15.06 2.24 14.84 C 2.24 14.62 2.34 14.41 2.52 14.28 L 15.4 1.4 C 15.53 1.22 15.74 1.12 15.96 1.12 C 16.18 1.12 16.39 1.22 16.52 1.4 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 2.24 14.84 L 29.68 14.84" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 2.24 14.84 L 29.68 14.84" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "sort",
+            //   command: "sort",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 15 C 3.63 10.47 7.88 7.19 12.87 6 L 24.84 6 C 28.35 7.61 30.6 11.13 30.6 15 C 30.6 18.87 28.35 22.39 24.84 24 L 12.87 24 C 7.88 22.81 3.63 19.53 1.2 15 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "display",
+            //   command: "display",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><rect x="2.66" y="1.52" width="26.6" height="26.6" rx="1.9" ry="1.9" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></rect><path d="M 2.66 7.22 L 29.26 7.22" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 2.66 7.22 L 29.26 7.22" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 8.36 1.52 L 8.36 28.12" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 8.36 1.52 L 8.36 28.12" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "internal storage",
+            //   command: "store",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 13.5 L 29.09 6 C 29.48 6 29.86 6.16 30.15 6.44 C 30.43 6.72 30.59 7.1 30.59 7.5 L 30.59 22.5 C 30.6 23.22 30.09 23.86 29.39 24 L 2.7 24 C 2.3 24 1.92 23.84 1.64 23.56 C 1.36 23.28 1.2 22.9 1.2 22.5 L 1.2 13.5 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "manual Input",
+            //   command: "manualInput",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.2 7.45 C 5.94 9.19 11.16 9.19 15.9 7.45 C 20.64 5.7 25.86 5.7 30.6 7.45 L 30.6 22.25 C 25.86 20.5 20.64 20.5 15.9 22.25 C 11.16 24 5.94 24 1.2 22.25 L 1.2 7.45 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "paper tape",
+            //   command: "paperBag",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><ellipse cx="15.8" cy="14.99" rx="13.365" ry="13.365" fill="#ffffff" stroke="#000000" stroke-width="1.3" pointer-events="all"></ellipse><path d="M 15.8 28.35 L 29.16 28.35" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 15.8 28.35 L 29.16 28.35" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "sequential data",
+            //   command: "ordinaldata",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 1.32 7.51 C 1.2 7.15 1.3 6.76 1.59 6.46 C 1.89 6.17 2.34 6 2.8 6.01 L 28.99 6.01 C 29.46 6 29.91 6.17 30.2 6.46 C 30.5 6.76 30.6 7.15 30.48 7.51 L 24.83 22.5 C 24.67 23.25 24.08 23.84 23.34 24 L 8.46 24 C 7.71 23.84 7.13 23.25 6.97 22.5 L 1.32 7.51 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "manual operation",
+            //   command: "manualOperation",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 3.9 6 L 27.9 6 C 29.39 6 30.6 10.03 30.6 15 C 30.6 19.97 29.39 24 27.9 24 L 3.9 24 C 2.41 24 1.2 19.97 1.2 15 C 1.2 10.03 2.41 6 3.9 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 27.9 6 C 26.41 6 25.2 10.03 25.2 15 C 25.2 19.97 26.41 24 27.9 24" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 27.9 6 C 26.41 6 25.2 10.03 25.2 15 C 25.2 19.97 26.41 24 27.9 24" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "direct data",
+            //   command: "directData",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 4.48 6 L 30.15 6 C 30.3 6.17 30.3 6.43 30.15 6.6 C 29 7.94 28.24 11.28 28.24 15 C 28.24 18.72 29 22.06 30.15 23.4 C 30.3 23.57 30.3 23.83 30.15 24 L 4.48 24 C 2.84 24 1.5 19.97 1.5 15 C 1.5 10.03 2.84 6 4.48 6 Z" fill="#ffffff" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "stored data",
+            //   command: "storeData",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 15.81 13.33 L 17.36 14.88 L 15.81 16.43 L 14.26 14.88 L 15.81 13.33 Z M 9.61 13.33 L 11.16 14.88 L 9.61 16.43 L 8.06 14.88 L 9.61 13.33 Z M 22.01 13.33 L 23.56 14.88 L 22.01 16.43 L 20.46 14.88 L 22.01 13.33 Z" fill="#ffff00" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.24 8.68 L 30.38 8.68" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 1.24 8.68 L 30.38 8.68" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.24 21.08 L 30.38 21.08" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 1.24 21.08 L 30.38 21.08" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "parallel mode",
+            //   command: "parallelModel",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 22.96 1.12 L 8.96 1.12 L 8.96 28.56 L 22.96 28.56" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 22.96 1.12 L 8.96 1.12 L 8.96 28.56 L 22.96 28.56" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "annotation",
+            //   command: "annotation",
+            // },
+            // {
+            //   path:
+            //     '<svg style="left: 1px; top: 1px; width: 32px; height: 30px; display: block; position: relative; overflow: hidden;"><g><g></g><g><g transform="translate(0.5,0.5)" style="visibility: visible;"><path d="M 29.96 1.12 L 15.96 1.12 L 15.96 28.56 L 29.96 28.56" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 29.96 1.12 L 15.96 1.12 L 15.96 28.56 L 29.96 28.56" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path><path d="M 1.96 14.84 L 15.96 14.84" fill="none" stroke="white" stroke-width="9.3" stroke-miterlimit="10" pointer-events="stroke" visibility="hidden"></path><path d="M 1.96 14.84 L 15.96 14.84" fill="none" stroke="#000000" stroke-width="1.3" stroke-miterlimit="10" pointer-events="all"></path></g></g><g></g><g></g></g></svg>',
+            //   iconName: "",
+            //   text: "annotation 2",
+            //   command: "induce",
+            // },
           ],
         },
       ],

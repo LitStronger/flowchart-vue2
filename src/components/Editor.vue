@@ -15,7 +15,7 @@
       }"
     ></Edit>
     <div id="download-win" class="download-win">
-      <div class="download-header">
+      <div class="download-header">   
         请右击下载
         <span
           @click.stop="closeDownLoadWin"
@@ -35,6 +35,7 @@ import Edit from "./plugin/edit";
 import zrender from "zrender";
 
 import getPlainTxt from "../flow/ued/getPlainTxt";
+import { message } from "ant-design-vue";
 
 export default {
   name: "Editor",
@@ -188,6 +189,7 @@ export default {
             "tempFile",
             JSON.stringify(this.editor.getData())
           );
+          message.success("保存成功");
       }
     });
 

@@ -1,16 +1,22 @@
-var webpack =require('webpack');
+var webpack = require("webpack");
 module.exports = {
-
-    publicPath: './',
-    configureWebpack: {
-      plugins: [
-        new webpack.ProvidePlugin({
-           zrender:"zrender",
-          "windows.zrender":"zrender"
-        })
-      ]
+  publicPath: "./",
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        zrender: "zrender",
+        "windows.zrender": "zrender",
+      }),
+    ],
+  },
+  lintOnSave: undefined,
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true,
+        },
+      },
     },
-  
-    lintOnSave: undefined
-  }
-  
+  },
+};
