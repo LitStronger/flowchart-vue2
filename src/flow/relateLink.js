@@ -38,8 +38,8 @@ export default class RelateLink extends zrender.Group {
     };
 
     (this.entryDirection = [1, 0]), (this.exitDirection = [-1, 0]);
-    this.entryExt = 40; // entry extend 起始点的延长距离
-    this.exitExt = 40;
+    this.entryExt = 20; // entry extend 起始点的延长距离
+    this.exitExt = 20;
     this.text = text;
     this.lineWidth = 1;
 
@@ -63,11 +63,7 @@ export default class RelateLink extends zrender.Group {
     } else if (this.lineDashType == "dashed") {
       this.lineDash = [10, 4, 4, 4];
     }
-    // this.bs&&this.bs.attr({
-    //     style:{
-    //         lineDash:this.lineDash
-    //     }
-    // });
+
   }
   create() {
     this.setLineDashType();
@@ -80,6 +76,8 @@ export default class RelateLink extends zrender.Group {
         },
         z: 16,
       });
+      this.entryExt = 70;
+      this.exitExt = 70;
     } else if (this.type == "polyline") {
       this.bs = new zrender.Polyline({
         style: {
@@ -89,8 +87,8 @@ export default class RelateLink extends zrender.Group {
         },
         z: 16,
       });
-      // this.entryExt = 60;
-      // this.exitExt = 60;
+      this.entryExt = 20;
+      this.exitExt = 20;
     } else {
       this.bs = new zrender.Line({
         style: {
@@ -126,16 +124,7 @@ export default class RelateLink extends zrender.Group {
       draggable: true,
       z: 20000,
     });
-    // this.fromCircle = new zrender.Circle({
-    //     style: {
-    //         stroke: this.stroke,
-    //         fill: '#fff'
-    //     },
-    //     shape: {
-    //         r: 3
-    //     },
-    //     z: 17
-    // });
+
     this.fromPointCircle = new zrender.Circle({
       style: {
         fill: "#fff",
@@ -269,47 +258,6 @@ export default class RelateLink extends zrender.Group {
     } else {
       toPoint = this.toPoint;
     }
-    // var direct=this.judgeDirect(fromPoint,toPoint);
-    // this.direct=direct;
-
-    // if(direct=='righttop'||direct=="lefttop"){
-    //      var x1=fromPoint.x+fromBox.width/2;
-    //      var y1=fromPoint.y;
-    //      var fromcx=fromBox.width/2;
-    //      var fromcy=0;
-
-    //      if(direct=='righttop'){
-    //         var r=0.5;
-    //         var x2=toPoint.x+toBox.width*r-2;
-    //         var y2=toPoint.y+toBox.height-2;
-    //         var tocx=toBox.width*r;
-    //         var tocy=toBox.height;
-    //      }else{
-    //         var r=0.5;
-    //         var x2=toPoint.x+toBox.width*r+2;
-    //         var y2=toPoint.y+toBox.height+2;
-    //         var tocx=toBox.width*r;
-    //         var tocy=toBox.height;
-    //      }
-    // }else if(direct=='rightbottom'||direct=="leftbottom"){
-    //      var x1=fromPoint.x+fromBox.width/2;
-    //      var y1=fromPoint.y+fromBox.height;
-    //      var fromcx=fromBox.width/2;
-    //      var fromcy=fromBox.height;
-    //      if(direct=='rightbottom'){
-    //         var r=0.5;
-    //         var x2=toPoint.x+toBox.width*r-2;
-    //         var y2=toPoint.y-2;
-    //         var tocx=toBox.width*r;
-    //         var tocy=0;
-    //      }else{
-    //         var r=0.5;
-    //         var x2=toPoint.x+toBox.width*r+2;
-    //         var y2=toPoint.y+2;
-    //         var tocx=toBox.width*r;
-    //         var tocy=0;
-    //      }
-    // }
 
     var cpx1 = fromPoint.x + (toPoint.x - fromPoint.x) / 4;
     var cpy1 = fromPoint.y + (toPoint.y - fromPoint.y) / 4;
@@ -441,7 +389,7 @@ export default class RelateLink extends zrender.Group {
     }
   }
 
-  bslineConnection(x, y) {
+  bsConnection(x, y) {
     if (x && y) {
       this.toPoint = {
         x: x,
@@ -529,10 +477,9 @@ export default class RelateLink extends zrender.Group {
     if (this.type == "polyline") {
       this.polylineConnection(x, y);
     } else {
-      this.polylineConnection(x, y);
-      // this.setCpx1(this.cpx.x1, this.cpx.y1, x, y);
-      // this.setCpx2(x, y, x, y);
+      this.bsConnection(x, y);
       var box = this.calc(x, y);
+      console.log(box);
       this.bs.attr({
         shape: box,
       });
@@ -754,15 +701,10 @@ export default class RelateLink extends zrender.Group {
     var points;
     var box = this.cpx;
     if (this.type == "bs" || this.type == "line") {
-      this.fromPoint = {
-        ...this.fromPoint,
-        ...{ x: this.cpx.x1, y: this.cpx.y1 },
-      };
-      this.toPoint = { ...this.toPoint, ...{ x: this.cpx.x2, y: this.cpx.y2 } };
       this.bs.attr({
         shape: box,
       });
-      this.polylineConnection();
+      // this.polylineConnection();
     } else {
       this.fromPoint = {
         ...this.fromPoint,
