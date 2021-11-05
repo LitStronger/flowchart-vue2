@@ -38,8 +38,8 @@ export default class RelateLink extends zrender.Group {
     };
 
     (this.entryDirection = [1, 0]), (this.exitDirection = [-1, 0]);
-    this.entryExt = 20;
-    this.exitExt = 20;
+    this.entryExt = 40; // entry extend 起始点的延长距离
+    this.exitExt = 40;
     this.text = text;
     this.lineWidth = 1;
 
@@ -71,7 +71,6 @@ export default class RelateLink extends zrender.Group {
   }
   create() {
     this.setLineDashType();
-    console.log(this.type);
     if (this.type == "bs") {
       this.bs = new zrender.BezierCurve({
         style: {
@@ -90,6 +89,8 @@ export default class RelateLink extends zrender.Group {
         },
         z: 16,
       });
+      // this.entryExt = 60;
+      // this.exitExt = 60;
     } else {
       this.bs = new zrender.Line({
         style: {
@@ -101,6 +102,7 @@ export default class RelateLink extends zrender.Group {
       });
     }
 
+    // bs 控制点1
     this.cpx1 = new zrender.Circle({
       style: {
         stroke: "#666",
@@ -112,6 +114,7 @@ export default class RelateLink extends zrender.Group {
       draggable: true,
       z: 20000,
     });
+    // bs 控制点2
     this.cpx2 = new zrender.Circle({
       style: {
         stroke: "#666",
@@ -163,12 +166,14 @@ export default class RelateLink extends zrender.Group {
     this.toPointCircle.edge = this;
     this.toPointCircle.edgeType = "to";
 
+    // ？
     this.line1 = new zrender.Line({
       style: {
         stroke: "#ccc",
       },
       z: 10000,
     });
+    // ？
     this.line2 = new zrender.Line({
       style: {
         stroke: "#ccc",
@@ -176,6 +181,7 @@ export default class RelateLink extends zrender.Group {
       z: 10000,
     });
 
+    // 三角箭头
     this.pl = new zrender.Polygon({
       style: {
         stroke: this.stroke,
@@ -371,7 +377,7 @@ export default class RelateLink extends zrender.Group {
         y: y,
       };
     }
-    this.calcDirection();
+    this.calcDirection(); // 计算方向 entryDirection
 
     let obj = {
       entryPoint: [this.fromPoint.x, this.fromPoint.y],
@@ -387,7 +393,7 @@ export default class RelateLink extends zrender.Group {
       typeof obj.exitPoint[0] == "number" &&
       typeof obj.exitPoint[0] == "number"
     ) {
-      var ps = connection(obj);
+      var ps = connection(obj); // 得出确定线段的点数组
       var points = [];
 
       ps.forEach((item) => {
@@ -401,6 +407,74 @@ export default class RelateLink extends zrender.Group {
       this.cpx.cpy1 = points[1][1];
 
       this.cpx.cpx2 = points[points.length - 2][0];
+      this.cpx.cpy2 = points[points.length - 2][1];
+
+      var len = ps.length;
+
+      var n = parseInt(len / 2) - 1;
+      this.lineCenter = [
+        (points[n][0] + points[n + 1][0]) / 2,
+        (points[n][1] + points[n + 1][1]) / 2,
+      ];
+
+      if (this.lineWidth % 2 == 1) {
+        points.forEach((item) => {
+          item[0] = parseInt(item[0]) + 0.5;
+          item[1] = parseInt(item[1]) + 0.5;
+        });
+      } else {
+        points.forEach((item) => {
+          item[0] = parseInt(item[0]);
+          item[1] = parseInt(item[1]);
+        });
+      }
+
+      this.cpx.points = zrender.util.clone(points);
+      this.cpx.lineCenter = this.lineCenter.slice();
+
+      this.bs.attr({
+        shape: {
+          points,
+        },
+      });
+      this.renderText();
+    }
+  }
+
+  bslineConnection(x, y) {
+    if (x && y) {
+      this.toPoint = {
+        x: x,
+        y: y,
+      };
+    }
+    this.calcDirection(); // 计算方向 entryDirection
+
+    let obj = {
+      entryPoint: [this.fromPoint.x, this.fromPoint.y],
+      exitPoint: [this.toPoint.x, this.toPoint.y],
+      entryDirection: this.entryDirection,
+      exitDirection: this.exitDirection,
+      entryExt: this.entryExt,
+      exitExt: this.exitExt,
+    };
+    if (
+      typeof obj.entryPoint[0] == "number" &&
+      typeof obj.entryPoint[0] == "number" &&
+      typeof obj.exitPoint[0] == "number" &&
+      typeof obj.exitPoint[0] == "number"
+    ) {
+      var ps = connection(obj); // 得出确定线段的点数组
+      var points = [];
+
+      ps.forEach((item) => {
+        points.push(item.position);
+      });
+
+      this.cpx.cpx1 = points[1][0]; // bs第一个控制点
+      this.cpx.cpy1 = points[1][1];
+
+      this.cpx.cpx2 = points[points.length - 2][0]; // bs第二个控制点
       this.cpx.cpy2 = points[points.length - 2][1];
 
       var len = ps.length;
@@ -455,6 +529,9 @@ export default class RelateLink extends zrender.Group {
     if (this.type == "polyline") {
       this.polylineConnection(x, y);
     } else {
+      this.polylineConnection(x, y);
+      // this.setCpx1(this.cpx.x1, this.cpx.y1, x, y);
+      // this.setCpx2(x, y, x, y);
       var box = this.calc(x, y);
       this.bs.attr({
         shape: box,
@@ -661,7 +738,6 @@ export default class RelateLink extends zrender.Group {
   setCpx1(x, y, dx, dy) {
     this.cpx.cpx1 = x;
     this.cpx.cpy1 = y;
-
     this.setx1(x, y, dx, dy);
     this._refresh();
   }
@@ -674,14 +750,19 @@ export default class RelateLink extends zrender.Group {
   }
 
   _refresh() {
-    // window.console.log(1111111111);
     this.setLineDashType();
     var points;
     var box = this.cpx;
     if (this.type == "bs" || this.type == "line") {
+      this.fromPoint = {
+        ...this.fromPoint,
+        ...{ x: this.cpx.x1, y: this.cpx.y1 },
+      };
+      this.toPoint = { ...this.toPoint, ...{ x: this.cpx.x2, y: this.cpx.y2 } };
       this.bs.attr({
         shape: box,
       });
+      this.polylineConnection();
     } else {
       this.fromPoint = {
         ...this.fromPoint,
@@ -690,14 +771,7 @@ export default class RelateLink extends zrender.Group {
       this.toPoint = { ...this.toPoint, ...{ x: this.cpx.x2, y: this.cpx.y2 } };
       this.polylineConnection();
     }
-    // this.fromCircle.attr({
-    //     shape: {
-    //         cx: box.x1,
-    //         cy: box.y1
-    //     }
-    // })
 
-    // if(this.type=='bs'){
     this.line1.attr({
       shape: {
         x1: box.x1,

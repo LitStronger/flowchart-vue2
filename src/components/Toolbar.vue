@@ -4,11 +4,13 @@
       <div class="shape-header">{{ s.header }}</div>
       <ul v-if="s.id === 'line'">
         <li
-          draggable="true"
-          @dragstart="dragstart($event, item)"
+          draggable="false"
+          @click="handleLineTypeClick(item)"
           v-for="item in s.icon"
           v-bind:key="item.command"
-          :class="'iconfont ' + item.iconName"
+          :class="
+            'iconfont ' + item.iconName + (item.isActive ? ' active' : '')
+          "
         >
           <div v-html="item.path" :title="item.text"></div>
         </li>
@@ -135,6 +137,8 @@
   </div>
 </template>
 <script>
+import eventBus from "../eventbus";
+
 export default {
   name: "Toolbar",
   data() {
@@ -151,17 +155,20 @@ export default {
             {
               iconName: "icon-zhixianjiantou",
               text: "rounded rectangle",
-              command: "straightLine",
+              type: "line",
+              isActive: false,
             },
             {
               iconName: "icon-zhexianjiantou",
               text: "rounded rectangle",
-              command: "polyline",
+              type: "polyline",
+              isActive: true,
             },
             {
               iconName: "icon-quxianjiantou",
               text: "rounded rectangle",
-              command: "bsline",
+              type: "bs",
+              isActive: false,
             },
           ],
         },
@@ -424,8 +431,19 @@ export default {
       }
     },
     dragstart(e, item) {
-      console.log(e);
       e.dataTransfer.setData("addShape", JSON.stringify(item));
+    },
+    handleLineTypeClick(item) {
+      eventBus.$emit("changeCurLineType", item.type);
+      // 选中高亮
+      this.shape.forEach((s) => {
+        if (s.id === "line") {
+          s.icon.forEach((e) => {
+            e.isActive = false;
+          });
+        }
+      });
+      item.isActive = true;
     },
     uploadImage(e) {
       var file = e.target.files[0];
@@ -521,6 +539,10 @@ a {
 .toolbar ul li:hover {
   background: #e5e5e5;
 }
+.toolbar ul .active {
+  background: #e5e5e5;
+}
+
 li {
   display: inline-block;
   width: 40px;

@@ -15,7 +15,7 @@
       }"
     ></Edit>
     <div id="download-win" class="download-win">
-      <div class="download-header">   
+      <div class="download-header">
         请右击下载
         <span
           @click.stop="closeDownLoadWin"
@@ -239,6 +239,12 @@ export default {
       } else {
         this.editor.cancelShadow();
       }
+    });
+
+    // 通过左侧ToolBar修改当前线段Type
+    eventBus.$on("changeCurLineType", (type) => {
+      this.editor.curEdgeType = type;
+      console.log(this.editor);
     });
 
     this.editor.listen("selectNode", (e) => {

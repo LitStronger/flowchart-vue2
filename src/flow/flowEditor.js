@@ -21,6 +21,7 @@ class FlowEditor extends zrender.Group {
 
     this.nodes = [];
     this.edges = [];
+    this.curEdgeType = "polyline"; // 当前选中的线类型
     this.groups = [];
 
     this.status = "";
@@ -73,6 +74,7 @@ class FlowEditor extends zrender.Group {
   init(initData, isShow) {
     this.nodes = [];
     this.edges = [];
+    this.curEdgeType = "polyline"; // 当前选中的线类型
     this.groups = [];
     this.removeAll();
     this.add(this.cover);
@@ -310,6 +312,7 @@ class FlowEditor extends zrender.Group {
               new cmd.ChangeEdgeText(data.edge, oldText, newText)
             );
           } else {
+            // 改变类型，poly bs straight; data.style里包含type
             var od, nd;
             od = data.edge.getData();
             nd = { ...od, ...data.style };
@@ -1269,20 +1272,40 @@ class FlowEditor extends zrender.Group {
           anch = e.target;
           this.status = "isCreateLink";
           isCreateLink = true;
-          console.log(anch);
-          //   edge = new RelateLink(Object.assign(anch.node, { type: "bs" })); // 传入node节
-          edge = new RelateLink(
-            anch.node,
-            null,
-            "",
-            "#666",
-            "#666",
-            "#fff",
-            "polyline", // 贝塞尔曲线
-            "solid"
-          );
-          //   let type = "bs";
-          //   edge = new RelateLink(type);
+          if (this.curEdgeType === "polyline") {
+            edge = new RelateLink(
+              anch.node,
+              null,
+              "",
+              "#666",
+              "#666",
+              "#fff",
+              "polyline",
+              "solid"
+            );
+          } else if (this.curEdgeType === "bs") {
+            edge = new RelateLink(
+              anch.node,
+              null,
+              "",
+              "#666",
+              "#666",
+              "#fff",
+              "bs",
+              "solid"
+            );
+          } else {
+            edge = new RelateLink(
+              anch.node,
+              null,
+              "",
+              "#666",
+              "#666",
+              "#fff",
+              "line",
+              "solid"
+            );
+          }
           edge.setFromPoint({ ...anch.point }); // 传入起始点
           edge.fromAnch = anch;
           this.add(edge);
