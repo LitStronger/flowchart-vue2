@@ -63,7 +63,6 @@ export default class RelateLink extends zrender.Group {
     } else if (this.lineDashType == "dashed") {
       this.lineDash = [10, 4, 4, 4];
     }
-
   }
   create() {
     this.setLineDashType();
@@ -479,7 +478,6 @@ export default class RelateLink extends zrender.Group {
     } else {
       this.bsConnection(x, y);
       var box = this.calc(x, y);
-      console.log(box);
       this.bs.attr({
         shape: box,
       });
@@ -701,10 +699,15 @@ export default class RelateLink extends zrender.Group {
     var points;
     var box = this.cpx;
     if (this.type == "bs" || this.type == "line") {
+      this.fromPoint = {
+        ...this.fromPoint,
+        ...{ x: this.cpx.x1, y: this.cpx.y1 },
+      };
+      this.toPoint = { ...this.toPoint, ...{ x: this.cpx.x2, y: this.cpx.y2 } };
+      this.polylineConnection();
       this.bs.attr({
         shape: box,
       });
-      // this.polylineConnection();
     } else {
       this.fromPoint = {
         ...this.fromPoint,

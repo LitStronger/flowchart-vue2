@@ -1374,6 +1374,7 @@ class FlowEditor extends zrender.Group {
       if (e.target && e.target.mark && e.target.mark == "anch") {
         if (isCreateLink) {
           if (e.target == anch) {
+            // 起始与终点重合
             this.removeEdge(edge);
             this.status = "";
             return;
