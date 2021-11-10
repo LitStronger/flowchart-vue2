@@ -33,6 +33,7 @@ import flowEditor from "../flow/flowEditor";
 import eventBus from "../eventbus";
 import Edit from "./plugin/edit";
 import zrender from "zrender";
+import FlowTree from "../flow/FlowTree/flowTree";
 
 import getPlainTxt from "../flow/ued/getPlainTxt";
 import { message } from "ant-design-vue";
@@ -190,6 +191,11 @@ export default {
             JSON.stringify(this.editor.getData())
           );
           message.success("保存成功");
+          break;
+        case "case":
+          var flowTree = new FlowTree();
+          flowTree.init(this.editor.nodes, this.editor.edges);
+          break;
       }
     });
 
@@ -244,7 +250,6 @@ export default {
     // 通过左侧ToolBar修改当前线段Type
     eventBus.$on("changeCurLineType", (type) => {
       this.editor.curEdgeType = type;
-      console.log(this.editor);
     });
 
     this.editor.listen("selectNode", (e) => {

@@ -23,6 +23,7 @@ export default class RelateLink extends zrender.Group {
     this.fontStyle = "normal";
     this.fontWeight = "normal";
     this.lineCenter = [];
+    this.isCpxDrag = false; // is control point drag 是否拖拽控制点
 
     //状态
     this.status = "create"; //create , add , over ,active
@@ -154,14 +155,14 @@ export default class RelateLink extends zrender.Group {
     this.toPointCircle.edge = this;
     this.toPointCircle.edgeType = "to";
 
-    // ？
+    // 起始点与控制点1的连线
     this.line1 = new zrender.Line({
       style: {
         stroke: "#ccc",
       },
       z: 10000,
     });
-    // ？
+    // 终点与控制点2的连线
     this.line2 = new zrender.Line({
       style: {
         stroke: "#ccc",
@@ -447,11 +448,11 @@ export default class RelateLink extends zrender.Group {
       this.cpx.points = zrender.util.clone(points);
       this.cpx.lineCenter = this.lineCenter.slice();
 
-      this.bs.attr({
-        shape: {
-          points,
-        },
-      });
+      // this.bs.attr({
+      //   shape: {
+      //     points,
+      //   },
+      // });
       this.renderText();
     }
   }
@@ -668,14 +669,14 @@ export default class RelateLink extends zrender.Group {
       var pos = this.cpx1.position.slice();
       this.cpx.cpx1 = pos[0];
       this.cpx.cpy1 = pos[1];
-      // window.edge=this;
-      // window.console.log(pos[0]);
+      this.isCpxDrag = true;
       this._refresh();
     });
     this.cpx2.on("drag", () => {
       var pos = this.cpx2.position.slice();
       this.cpx.cpx2 = pos[0];
       this.cpx.cpy2 = pos[1];
+      this.isCpxDrag = true;
       this._refresh();
     });
   }
@@ -704,7 +705,14 @@ export default class RelateLink extends zrender.Group {
         ...{ x: this.cpx.x1, y: this.cpx.y1 },
       };
       this.toPoint = { ...this.toPoint, ...{ x: this.cpx.x2, y: this.cpx.y2 } };
-      this.polylineConnection();
+
+      // 拖拽时不需要动态计算控制点
+      if (!this.isCpxDrag) {
+        this.bsConnection();
+      } else {
+        this.isCpxDrag = false;
+      }
+
       this.bs.attr({
         shape: box,
       });

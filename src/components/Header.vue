@@ -29,7 +29,9 @@
           <li class="iconfont icon-PNG" @click.stop="save('png')">
             <span>PNG</span>
           </li>
-          <!-- <li class="iconfont icon-jpg" @click.stop="save('jpg')"><span>JPG</span></li> -->
+          <li class="iconfont icon-jpg" @click.stop="save('case')">
+            <span>CASE</span>
+          </li>
         </ul>
       </li>
     </ul>
