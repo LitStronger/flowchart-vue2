@@ -10,7 +10,7 @@ class FlowTree {
 
   getNodeById(id) {
     let result = null;
-    function bfs(node) {
+    function dfs(node) {
       if (!node) return;
       if (node.nodeId === id) {
         result = node;
@@ -18,12 +18,12 @@ class FlowTree {
       }
       if (node.childNodes && node.childNodes.length) {
         for (let i = 0; i < node.childNodes.length; i++) {
-          bfs(node.childNodes[i]);
+          dfs(node.childNodes[i]);
         }
       }
     }
     this.tempNodeList.forEach((root) => {
-      bfs(root); // 对各子树使用bfs搜索
+      dfs(root); // 对各子树使用dfs搜索
     });
 
     return result;
@@ -37,7 +37,8 @@ class FlowTree {
       this.tempNodeList.push(node);
     });
     this.tempEdgeList = edgeList;
-    console.log("tmp", this.tempNodeList);
+    console.log("tmp", this.tempNodeList, this.tempEdgeList);
+    this.createTree();
   }
 
   // 依次加入各边，得出以各个node作为顶点的树，取最深的一颗
@@ -52,39 +53,53 @@ class FlowTree {
         fromNode.childNodes.push(toNode);
       }
     }
-    console.log(this.tempNodeList);
+    console.log("calc", this.tempNodeList);
+    return this.getRoot();
   }
-  // 连通各节点
-  // refreshTree(fromId, toId, optType) {
-  //   // 连线
-  //   if (fromId && toId && optType === "connectLine") {
-  //     let fromNode = this.getNodeById(fromId);
-  //     let toNode = this.getNodeById(toId);
-  //     fromNode.childNodes.push(toNode);
-  //     for (let i = 0; i < this.tempNodeList.length; i++) {
-  //       if (toNode.nodeId === this.tempNodeList[i].nodeId) {
-  //       }
-  //     }
-  //   }
-  //   // 删除连线
-  //   else if (fromId && toId && optType === "deleteLine") {
-  //     let fromNode = this.getNodeById(fromId);
-  //     let toNode = this.getNodeById(toId);
-  //     this.tempNodeList.forEach((root) => {
-  //       if (fromNode && fromNode.childNodes && fromNode.childNodes.length)
-  //         for (let i = 0; i < fromNode.childNodes.length; i++) {
-  //           if (fromNode.childNodes[i].nodeId === toId) {
-  //             fromNode.childNodes.splice(i, 1);
-  //           }
-  //         }
-  //     });
-  //     this.tempNodeList.push(toNode);
-  //   }
-  //   // 删除节点时
-  //   else if (fromId && optType === "deleteNode") {
-  //     this.tempNodeList.forEach((root) => {});
-  //   }
-  // }
+
+  getRoot() {
+    let maxLen = 0;
+    let root = null;
+
+    this.tempNodeList.forEach((e) => {
+      let len = this.getLength(e);
+      if (len > maxLen) {
+        maxLen = len;
+        root = e;
+      }
+    });
+    console.log("res", root);
+    return root;
+  }
+  // 获取树的高度
+  getLength(root) {
+    let maxLen = 0;
+
+    // map解决循环引用
+    function dfs(node, len = 0, m = new Map()) {
+      if (!node) return;
+
+      // 成环
+      if (m.has(node)) {
+        maxLen = Math.max(maxLen, len);
+        console.log("成环");
+        return;
+      }
+      m.set(node, node);
+
+      if (node.childNodes && !node.childNodes.length) {
+        maxLen = Math.max(maxLen, len);
+        return;
+      }
+      if (node.childNodes && node.childNodes.length) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          dfs(node.childNodes[i], len + 1, m);
+        }
+      }
+    }
+    dfs(root);
+    return maxLen;
+  }
 }
 
 export default FlowTree;

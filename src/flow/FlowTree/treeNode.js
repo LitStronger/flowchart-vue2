@@ -3,7 +3,7 @@ class TreeNode {
   constructor(nodeId, name) {
     this.nodeId = nodeId || this.nodeCount++;
     this.name = name || "";
-    this.childNodes = null;
+    this.childNodes = [];
   }
 }
 
