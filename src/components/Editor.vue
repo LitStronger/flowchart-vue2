@@ -192,10 +192,39 @@ export default {
           );
           message.success("保存成功");
           break;
-        case "case":
-          var flowTree = new FlowTree();
+        case "case": {
+          let flowTree = new FlowTree();
           flowTree.init(this.editor.nodes, this.editor.edges);
+          let nodes = flowTree.createTree();
+          const request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
+          request.onreadystatechange = function() {
+            // 状态发生变化时，函数被回调
+            if (request.readyState === 4) {
+              // 成功完成
+              // 判断响应结果:
+              if (request.status === 200) {
+                // 成功，通过responseText拿到响应的文本:
+              } else {
+                // 失败，根据响应码判断失败原因:
+              }
+            } else {
+              // HTTP请求还在继续...
+            }
+          };
+
+          // 发送请求:
+          request.open("PUT", "http://150.158.157.62:3000/rest/pc/testcase"); //提交的url http://150.158.157.62:3000/rest/pc/testcase
+          // request.setRequestHeader("Content-type", "application/json");
+
+          request.send([
+            JSON.stringify({
+              nodes: nodes,
+              graphType: flowTree.graphType,
+              testcase_id: flowTree.graphId,
+            }),
+          ]); //加入待修改的参数
           break;
+        }
       }
     });
 

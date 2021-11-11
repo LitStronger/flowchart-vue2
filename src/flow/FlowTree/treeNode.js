@@ -1,9 +1,9 @@
 class TreeNode {
   static nodeCount = 0;
-  constructor(nodeId, name) {
-    this.nodeId = nodeId || this.nodeCount++;
+  constructor(node_id, name) {
+    this.node_id = node_id || this.nodeCount++;
     this.name = name || "";
-    this.childNodes = [];
+    this.child_nodes = [];
   }
 }
 

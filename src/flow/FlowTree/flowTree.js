@@ -12,13 +12,13 @@ class FlowTree {
     let result = null;
     function dfs(node) {
       if (!node) return;
-      if (node.nodeId === id) {
+      if (node.node_id === id) {
         result = node;
         return;
       }
-      if (node.childNodes && node.childNodes.length) {
-        for (let i = 0; i < node.childNodes.length; i++) {
-          dfs(node.childNodes[i]);
+      if (node.child_nodes && node.child_nodes.length) {
+        for (let i = 0; i < node.child_nodes.length; i++) {
+          dfs(node.child_nodes[i]);
         }
       }
     }
@@ -38,7 +38,6 @@ class FlowTree {
     });
     this.tempEdgeList = edgeList;
     console.log("tmp", this.tempNodeList, this.tempEdgeList);
-    this.createTree();
   }
 
   // 依次加入各边，得出以各个node作为顶点的树，取最深的一颗
@@ -50,7 +49,7 @@ class FlowTree {
         let toId = e.toNode.id;
         let fromNode = this.getNodeById(fromId);
         let toNode = this.getNodeById(toId);
-        fromNode.childNodes.push(toNode);
+        fromNode.child_nodes.push(toNode);
       }
     }
     console.log("calc", this.tempNodeList);
@@ -87,13 +86,13 @@ class FlowTree {
       }
       m.set(node, node);
 
-      if (node.childNodes && !node.childNodes.length) {
+      if (node.child_nodes && !node.child_nodes.length) {
         maxLen = Math.max(maxLen, len);
         return;
       }
-      if (node.childNodes && node.childNodes.length) {
-        for (let i = 0; i < node.childNodes.length; i++) {
-          dfs(node.childNodes[i], len + 1, m);
+      if (node.child_nodes && node.child_nodes.length) {
+        for (let i = 0; i < node.child_nodes.length; i++) {
+          dfs(node.child_nodes[i], len + 1, m);
         }
       }
     }
