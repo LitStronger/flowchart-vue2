@@ -37,7 +37,8 @@ class FlowTree {
       this.tempNodeList.push(node);
     });
     this.tempEdgeList = edgeList;
-    console.log("tmp", this.tempNodeList, this.tempEdgeList);
+    this.graphType = this.judgeGraphType(nodeList);
+    // console.log("tmp", this.tempNodeList, this.tempEdgeList);
   }
 
   // 依次加入各边，得出以各个node作为顶点的树，取最深的一颗
@@ -98,6 +99,18 @@ class FlowTree {
     }
     dfs(root);
     return maxLen;
+  }
+  // 判断图类型，带菱形if框判定为流程图  1流程图  2状态转移 -1unkown
+  judgeGraphType(nodeList) {
+    if (nodeList && nodeList.length) {
+      nodeList.forEach((node) => {
+        if (node.type === "diamond") {
+          return 1;
+        }
+      });
+      return 2;
+    }
+    return -1;
   }
 }
 

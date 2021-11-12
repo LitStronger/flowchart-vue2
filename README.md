@@ -18,4 +18,6 @@ npm run serve
 npm run build
 ```
 
-test
+### 预览地址
+
+[https://azayq.github.io/flowchart-vue2/dist/index.html](https://azayq.github.io/flowchart-vue2/dist/index.html)
