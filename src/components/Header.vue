@@ -29,8 +29,11 @@
           <li class="iconfont icon-PNG" @click.stop="save('png')">
             <span>PNG</span>
           </li>
-          <li class="iconfont icon-jpg" @click.stop="save('case')">
+          <!-- <li class="iconfont icon-jpg" @click.stop="save('case')">
             <span>CASE</span>
+          </li> -->
+          <li @click.stop="save('case')">
+            <Icon type="file" /><span>CASE</span>
           </li>
         </ul>
       </li>
@@ -49,6 +52,7 @@
 
 <script>
 import eventBus from "../eventbus";
+import { Icon } from "ant-design-vue";
 export default {
   name: "Header",
   data() {
@@ -125,6 +129,9 @@ export default {
     lang() {
       return this.language == "zh" ? "中文" : "English";
     },
+  },
+  components: {
+    Icon,
   },
   mounted() {
     eventBus.$on("selectNode", () => {

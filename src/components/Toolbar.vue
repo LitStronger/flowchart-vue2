@@ -65,9 +65,9 @@
       </ul>
     </div>
 
-    <div @click.stop="showCustomize = !showCustomize" class="toolbar-btn">
+    <!-- <div @click.stop="showCustomize = !showCustomize" class="toolbar-btn">
       + 添加自定义
-    </div>
+    </div> -->
 
     <div class="customize-win" v-if="showCustomize">
       <div class="customize-win-header">

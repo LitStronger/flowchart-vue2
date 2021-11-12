@@ -1240,19 +1240,15 @@ class FlowEditor extends zrender.Group {
       pos = this.position.slice();
       //框选
       if (!e.target) {
-        //document.addEventListener('mousedown',mouseDown);
-
         this.zr.trigger("clearSelectItems");
-
-        if (this.status == "selectFrame") {
-          this.selectFrame.attr({
-            shape: {
-              x: startX,
-              y: startY,
-            },
-          });
-          this.selectFrame.show();
-        }
+        this.status = "selectFrame";
+        this.selectFrame.attr({
+          shape: {
+            x: startX,
+            y: startY,
+          },
+        });
+        this.selectFrame.show();
 
         document.addEventListener("mousemove", mouseMove);
         document.addEventListener("mouseup", mouseUp);

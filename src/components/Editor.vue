@@ -213,7 +213,7 @@ export default {
           };
 
           // 发送请求:
-          request.open("PUT", "http://150.158.157.62:3000/rest/pc/testcase"); //提交的url http://150.158.157.62:3000/rest/pc/testcase
+          request.open("PUT", "150.158.157.62:3000/rest/pc/testcase"); //提交的url http://150.158.157.62:3000/rest/pc/testcase
           // request.setRequestHeader("Content-type", "application/json");
 
           request.send([
