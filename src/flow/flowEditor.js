@@ -1238,7 +1238,7 @@ class FlowEditor extends zrender.Group {
       startY = e.offsetY;
       drag = true;
       pos = this.position.slice();
-      //框选
+      //mousedown点击处无节点、线段时，框选区域
       if (!e.target) {
         this.zr.trigger("clearSelectItems");
         this.status = "selectFrame";
