@@ -171,8 +171,8 @@ export default {
       (e) => {
         var file = e.target.files[0];
         if (file && file.name.endsWith("json")) {
-          var reader = new FileReader(); //这里是核心！！！读取操作就是由它完成的。
-          reader.readAsText(file); //读取文件的内容
+          var reader = new FileReader(); // 读取操作
+          reader.readAsText(file); // 读取文件的内容
           reader.onload = function() {
             try {
               eventBus.$emit("initFlow", { data: JSON.parse(this.result) });
@@ -186,8 +186,53 @@ export default {
       false
     );
 
-    this.language = localStorage.getItem("localeLanguage") || "zh";
+    // 快捷键监听
+    window.addEventListener(
+      "keydown",
+      (e) => {
+        console.log(e.keyCode);
+        // 保存
+        if (
+          e.keyCode === 83 &&
+          (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+        ) {
+          e.preventDefault();
+          this.save("local");
+        }
+        // 删除
+        if (e.keyCode === 46) {
+          e.preventDefault();
+          eventBus.$emit("delete");
+        }
+        // 复制
+        if (
+          e.keyCode === 67 &&
+          (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+        ) {
+          e.preventDefault();
+          eventBus.$emit("copy");
+        }
+        // ctrl + z 撤销
+        if (
+          e.keyCode === 90 &&
+          (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+        ) {
+          e.preventDefault();
+          eventBus.$emit("undo");
+        }
+        // ctrl + y 恢复
+        if (
+          e.keyCode === 89 &&
+          (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+        ) {
+          e.preventDefault();
+          eventBus.$emit("redo");
+        }
+      },
+      true
+    );
 
+    this.language = localStorage.getItem("localeLanguage") || "zh";
     this.changeLanguage(this.language);
   },
   methods: {
