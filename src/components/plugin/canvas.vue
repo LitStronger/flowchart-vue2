@@ -6,7 +6,7 @@
                 <input class="magic-checkbox" type="checkbox" @change="changeShadow"  id="shadow" v-model="shadow"  name="checkbox" />
                 <label for="shadow">节点阴影</label>
             </p> -->
-    </div>
+    </div> 
     <div class="cmd-tip">
       <ul>
         <li>ctrl + c/v 复制/粘贴</li>

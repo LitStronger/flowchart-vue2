@@ -249,6 +249,12 @@ export default class RelateLink extends zrender.Group {
       this.renderText();
     }
   }
+  /**
+   * 动态计算cpx控制点位置
+   * @param {number} x 终点坐标 x
+   * @param {number} y 终点坐标 y
+   * @returns cpx
+   */
   calc(x, y) {
     var fromPoint = this.fromPoint;
     var toPoint;
@@ -712,7 +718,6 @@ export default class RelateLink extends zrender.Group {
       } else {
         this.isCpxDrag = false;
       }
-
       this.bs.attr({
         shape: box,
       });

@@ -312,7 +312,7 @@ class FlowEditor extends zrender.Group {
               new cmd.ChangeEdgeText(data.edge, oldText, newText)
             );
           } else {
-            // 改变类型，poly bs straight; data.style里包含type
+            // 改变类型，poly/bs/straight; data.style里包含type
             var od, nd;
             od = data.edge.getData();
             nd = { ...od, ...data.style };

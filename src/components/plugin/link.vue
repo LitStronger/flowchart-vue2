@@ -235,7 +235,10 @@ export default {
      },
      changeLineType(type){
         this.edgeData.type=type;
-        eventBus.$emit('changeEdge',{mark:'type',style:{type:type},edge:this.edge});
+        let ext;
+        if(type === 'bs') ext = 70;
+        if(type === 'polyLine') ext = 20;
+        eventBus.$emit('changeEdge',{mark:'type',style:{type:type,ext:ext},edge:this.edge});
      },
      changeLineDash(type){
          this.edgeData.lineDashType=type;
